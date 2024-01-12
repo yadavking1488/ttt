@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #333;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.status {
+    font-size: 1.5em;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <header>Made By Shiva</header>
+    
+    <script>
+        let currentPlayer = 'X';
+let gameBoard = ['', '', '', '', '', '', '', '', ''];
+let gameActive = true;
+
+function handleCellClick(index) {
+    if (gameBoard[index] === '' && gameActive) {
+        gameBoard[index] = currentPlayer;
+        document.getElementsByClassName('cell')[index].innerText = currentPlayer;
+        
+        if (checkWinner()) {
+            document.getElementById('status').innerText = `${currentPlayer} wins!`;
+            gameActive = false;
+        } else if (isBoardFull()) {
+            document.getElementById('status').innerText = 'It\'s a tie!';
+            gameActive = false;
+        } else {
+            currentPlayer = (currentPlayer === 'X') ? 'O' : 'X';
+            document.getElementById('status').innerText = `Current player: ${currentPlayer}`;
+        }
+    }
+}
+
+function checkWinner() {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+        [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+
+    for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (gameBoard[a] !== '' && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isBoardFull() {
+    return !gameBoard.includes('');
+}
+
+function resetGame() {
+    currentPlayer = 'X';
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+
+    const cells = document.getElementsByClassName('cell');
+    for (const cell of cells) {
+        cell.innerText = '';
+    }
+
+    document.getElementById('status').innerText = 'Current player: X';
+}
+
+    </script>
+
+<div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div id="board" class="board">
+        <div class="cell" onclick="handleCellClick(0)"></div>
+        <div class="cell" onclick="handleCellClick(1)"></div>
+        <div class="cell" onclick="handleCellClick(2)"></div>
+        <div class="cell" onclick="handleCellClick(3)"></div>
+        <div class="cell" onclick="handleCellClick(4)"></div>
+        <div class="cell" onclick="handleCellClick(5)"></div>
+        <div class="cell" onclick="handleCellClick(6)"></div>
+        <div class="cell" onclick="handleCellClick(7)"></div>
+        <div class="cell" onclick="handleCellClick(8)"></div>
+    </div>
+    <p id="status" class="status"></p>
+    <button onclick="resetGame()">Reset Game</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
